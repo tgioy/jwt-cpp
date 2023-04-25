@@ -53,7 +53,7 @@ endif()
 
 # Lookup dependencies
 if(${JWT_SSL_LIBRARY} MATCHES "OpenSSL")
-  find_package(OpenSSL 1.0.1 REQUIRED)
+  #find_package(OpenSSL 1.0.1 REQUIRED)
 elseif(${JWT_SSL_LIBRARY} MATCHES "LibreSSL")
   find_package(LibreSSL 3.0.0 REQUIRED)
 elseif(${JWT_SSL_LIBRARY} MATCHES "wolfSSL")
@@ -105,7 +105,8 @@ target_include_directories(jwt-cpp INTERFACE $<BUILD_INTERFACE:${JWT_INCLUDE_PAT
                                              $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 if(${JWT_SSL_LIBRARY} MATCHES "OpenSSL")
-  target_link_libraries(jwt-cpp INTERFACE OpenSSL::SSL OpenSSL::Crypto)
+  # target_link_libraries(jwt-cpp INTERFACE OpenSSL::SSL OpenSSL::Crypto)
+  target_link_libraries(jwt-cpp INTERFACE crypto ssl)
 endif()
 
 if(${JWT_SSL_LIBRARY} MATCHES "LibreSSL")
@@ -135,8 +136,8 @@ write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/jwt-cpp-config-vers
                                  COMPATIBILITY ExactVersion)
 
 install(TARGETS jwt-cpp EXPORT jwt-cpp-targets PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-install(EXPORT jwt-cpp-targets NAMESPACE jwt-cpp:: FILE jwt-cpp-targets.cmake
-        DESTINATION ${JWT_CMAKE_FILES_INSTALL_DIR})
+#install(EXPORT jwt-cpp-targets NAMESPACE jwt-cpp:: FILE jwt-cpp-targets.cmake
+#        DESTINATION ${JWT_CMAKE_FILES_INSTALL_DIR})
 install(DIRECTORY ${JWT_INCLUDE_PATH}/jwt-cpp DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 if(NOT JWT_EXTERNAL_PICOJSON AND NOT JWT_DISABLE_PICOJSON)
   install(FILES ${JWT_INCLUDE_PATH}/picojson/picojson.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/picojson)
